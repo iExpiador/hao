@@ -330,6 +330,49 @@
             color: #ffffff;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
         }
+
+           /* Botón Música */
+        #music-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: none; /* Fondo completamente eliminado */
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 40px; /* Tamaño más grande para el símbolo */
+            padding: 0;
+            margin: 0;
+            width: auto; /* Ancho automático según contenido */
+            height: auto; /* Alto automático según contenido */
+            /* Sombra aplicada directamente al texto/símbolo */
+            text-shadow: 
+                0 0 5px rgba(255, 255, 255, 0.5),
+                0 0 10px rgba(255, 255, 255, 0.3),
+                0 0 15px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Efecto al pasar el mouse */
+        #music-toggle:hover {
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 20px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        /* Efecto al hacer clic */
+        #music-toggle:active {
+            transform: scale(0.9);
+            text-shadow: 
+                0 0 3px rgba(255, 255, 255, 0.4),
+                0 0 6px rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -385,5 +428,168 @@
             </div>
         </div>
     </div>
+        <!-- Botón flotante -->
+    <button id="music-toggle">🔇</button>
+    
+    <!-- Reproductor oculto -->
+    <audio id="bg-music" loop>
+        <source src="hao.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const music = document.getElementById('bg-music');
+        const toggleBtn = document.getElementById('music-toggle');
+        let isPlaying = false;
+
+        // Intentar autoplay (puede fallar)
+        music.play().then(() => {
+            isPlaying = true;
+            toggleBtn.textContent = '❚❚';
+        }).catch(() => {
+            isPlaying = false;
+            toggleBtn.textContent = '▶';
+        });
+
+        // Control manual
+        toggleBtn.addEventListener('click', () => {
+            isPlaying ? music.pause() : music.play();
+            isPlaying = !isPlaying;
+            toggleBtn.textContent = isPlaying ? '❚❚' : '▶';
+        });
+    </script>
+
+<script>
+// Script de protección contra inspección de código
+    
+// 1. Deshabilitar clic derecho
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// 2. Deshabilitar teclas de acceso
+document.addEventListener('keydown', function(e) {
+    // Ctrl+U (Ver código fuente)
+    if (e.ctrlKey && e.keyCode === 85) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+S (Guardar página)
+    if (e.ctrlKey && e.keyCode === 83) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+Shift+I (Abrir DevTools)
+    if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+Shift+J (Abrir consola)
+    if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Ctrl+Shift+C (Selector de elementos)
+    if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // F12 (Herramientas de desarrollo)
+    if (e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+    }
+});
+
+// 3. Detectar apertura de DevTools mediante intervalos
+(function() {
+    var devtools = { open: false };
+    var threshold = 160; // Umbral en píxeles
+    
+    var emitEvent = function(state) {
+        if (devtools.open !== state) {
+            devtools.open = state;
+            if (state) {
+                // Redirigir o mostrar contenido falso cuando abren DevTools
+                document.body.innerHTML = '<h1 style="color:white;text-align:center;margin-top:100px;">NO ROBES CÓDIGO HIJ@ DE PERRA</h1>';
+                document.body.style.backgroundColor = 'black';
+            }
+        }
+    };
+    
+    setInterval(function() {
+        var widthThreshold = window.outerWidth - window.innerWidth > threshold;
+        var heightThreshold = window.outerHeight - window.innerHeight > threshold;
+        
+        if ((widthThreshold || heightThreshold) && !window.screenLeft && !window.screenTop) {
+            emitEvent(true);
+        } else {
+            emitEvent(false);
+        }
+    }, 500);
+})();
+
+// 4. Protección adicional para Chrome DevTools
+(function() {
+    var element = new Image();
+    var devtoolsOpen = false;
+    Object.defineProperty(element, 'id', {
+        get: function() {
+            devtoolsOpen = true;
+            document.body.innerHTML = '<h1 style="color:white;text-align:center;margin-top:100px;">NO ROBES CÓDIGO HIJ@ DE PERRA</h1>';
+            document.body.style.backgroundColor = 'black';
+        }
+    });
+    
+    console.log('%c', element);
+    
+    setInterval(function() {
+        devtoolsOpen = false;
+        console.log('%c', element);
+        console.clear();
+        if (devtoolsOpen) {
+            document.body.innerHTML = '<h1 style="color:white;text-align:center;margin-top:100px;">NO ROBES CÓDIGO HIJ@ DE PERRA</h1>';
+            document.body.style.backgroundColor = 'black';
+        }
+    }, 1000);
+})();
+
+// 5. Bloquear atajos de teclado adicionales
+document.addEventListener('keydown', function(e) {
+    // Alt+Shift+I (Firefox DevTools)
+    if (e.altKey && e.shiftKey && e.keyCode === 73) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Cmd+Alt+I (Mac Chrome)
+    if ((e.metaKey || e.ctrlKey) && e.altKey && e.keyCode === 73) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Cmd+Alt+J (Mac Chrome Console)
+    if ((e.metaKey || e.ctrlKey) && e.altKey && e.keyCode === 74) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Cmd+Alt+C (Mac Chrome Inspector)
+    if ((e.metaKey || e.ctrlKey) && e.altKey && e.keyCode === 67) {
+        e.preventDefault();
+        return false;
+    }
+    
+    // Shift+F10 (Menú contextual)
+    if (e.shiftKey && e.keyCode === 121) {
+        e.preventDefault();
+        return false;
+    }
+});
+</script>
 </body>
 </html>
