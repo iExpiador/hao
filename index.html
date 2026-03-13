@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criticizes | Space</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,700");
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            background: #0a0a0a;
+            height: 100vh;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Efecto de vapor/humo de fondo */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02) 0px, rgba(255, 255, 255, 0.02) 2px, transparent 2px, transparent 10px);
+            filter: blur(30px);
+            animation: vaporWave 20s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        /* Capa adicional de humo */
+        body::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 70% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
+                        radial-gradient(ellipse at 30% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            filter: blur(40px);
+            animation: smokeDrift 25s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes vaporWave {
+            0% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2) rotate(2deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0.9) rotate(-2deg);
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes smokeDrift {
+            0% {
+                transform: translateX(-5%) translateY(-5%) scale(1);
+            }
+            50% {
+                transform: translateX(5%) translateY(5%) scale(1.1);
+            }
+            100% {
+                transform: translateX(-3%) translateY(3%) scale(0.95);
+            }
+        }
+
+        .layout {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes popUp {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(5px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0px);
+                opacity: 1;
+            }
+        }
+
+        /* Efecto de borde degradado animado */
+        .profile {
+            animation: popUp ease-in-out 350ms;
+            background: #1a1a1a;
+            border-radius: 25px;
+            position: relative;
+            margin-top: 40px;
+            padding: 28px 30px 30px 35px;
+            width: 500px;
+            z-index: 2;
+        }
+
+        /* Efecto de brillo degradado alrededor - AHORA EN BLANCO */
+        .profile::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, 
+                #ffffff, 
+                #cccccc, 
+                #999999, 
+                #ffffff,
+                #dddddd,
+                #ffffff
+            );
+            background-size: 400% 400%;
+            border-radius: 28px;
+            z-index: -2;
+            animation: gradientShift 8s ease infinite;
+            filter: blur(3px);
+            opacity: 0.7;
+        }
+
+        /* Capa interna para mantener el contenido legible */
+        .profile::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #1a1a1a;
+            border-radius: 22px;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .profile__account {
+            align-self: center;
+            display: flex;
+            flex: 1;
+            justify-content: flex-end;
+            padding-left: 135px;
+        }
+
+        .profile__button {
+            border-radius: 50px;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            display: block;
+            font-family: "Montserrat", sans-serif;
+            font-size: 13px;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            transition: ease-in-out 250ms background, ease-in-out 250ms color, ease-in-out 250ms border-color;
+            background: transparent;
+        }
+
+        .profile__button:hover {
+            background: #ffffff;
+            color: #1a1a1a;
+            border-color: #ffffff;
+        }
+
+        .profile__edit {
+            flex: none;
+            margin-left: 30px;
+            width: 140px;
+        }
+
+        .profile__header {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .profile__icon {
+            flex: none;
+            font-size: 1.5em;
+            margin-right: 10px;
+            padding-top: 3px;
+        }
+
+        .profile__icon--gold {
+            color: #ffffff;
+        }
+
+        .profile__icon--blue {
+            color: #ffffff;
+        }
+
+        .profile__icon--pink {
+            color: #ffffff;
+        }
+
+        .profile__key {
+            font-family: "Montserrat", sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            text-align: center;
+            color: #cccccc;
+        }
+
+        .profile__picture {
+            background: #1a1a1a;
+            border-radius: 100px;
+            border: 10px solid #1a1a1a;
+            height: 125px;
+            position: absolute;
+            top: -40px;
+            width: 125px;
+            z-index: 3;
+        }
+
+        /* Efecto de brillo en la imagen - AHORA EN BLANCO */
+        .profile__picture::before {
+            border-radius: 100px;
+            box-shadow: 0 0 40px 0px rgba(255, 255, 255, 0.3);
+            content: "";
+            height: calc(100% + 20px);
+            left: -10px;
+            position: absolute;
+            top: -10px;
+            width: calc(100% + 20px);
+            z-index: -1;
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                opacity: 0.5;
+                box-shadow: 0 0 40px 0px rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 60px 10px rgba(255, 255, 255, 0.5);
+            }
+            100% {
+                opacity: 0.5;
+                box-shadow: 0 0 40px 0px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        .profile__picture img {
+            border-radius: 100px;
+            height: 100%;
+            width: 100%;
+            filter: brightness(1.1) contrast(1.1);
+        }
+
+        .profile__stat {
+            animation: slideUp ease-in-out 350ms forwards;
+            border-right: 1px solid #333333;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            opacity: 0;
+            padding: 10px 4px;
+            transform: translateY(5px);
+        }
+
+        .profile__stat:last-of-type {
+            border-right: none;
+        }
+
+        .profile__stat:nth-child(1) {
+            animation-delay: 400ms;
+        }
+
+        .profile__stat:nth-child(2) {
+            animation-delay: 500ms;
+        }
+
+        .profile__stat:nth-child(3) {
+            animation-delay: 600ms;
+        }
+
+        .profile__stats {
+            display: flex;
+        }
+
+        .profile__username {
+            font-family: "Montserrat", sans-serif;
+            font-weight: 600;
+            margin: 0;
+            text-align: right;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .profile__value {
+            font-family: "Montserrat", sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <div class="profile">
+            <div class="profile__picture">
+                <img src="https://i.ibb.co/KjZdg16Y/asakura2.png" alt="Hao">
+            </div>
+
+            <div class="profile__header">
+                <div class="profile__account">
+                    <h4 class="profile__username">𝐂𝐫𝐢𝐭𝐢𝐜𝐢𝐳𝐞𝐬</h4>
+                </div>
+
+                <div class="profile__edit">
+                    <a href="https://xat.com/editme" class="profile__button">Edit Space</a>
+                </div>
+            </div>
+
+            <div class="profile__stats">
+                <div class="profile__stat">
+                    <div class="profile__icon profile__icon--gold">
+                        <i class="fas fa-book"></i>
+                    </div>
+
+                    <div class="profile__value">
+                        385
+                        <div class="profile__key">Mangas</div>
+                    </div>
+                </div>
+
+                <div class="profile__stat">
+                    <div class="profile__icon profile__icon--blue">
+                        <i class="fas fa-coffee"></i>
+                    </div>
+
+                    <div class="profile__value">
+                        2197
+                        <div class="profile__key">Cafés</div>
+                    </div>
+                </div>
+
+                <div class="profile__stat">
+                    <div class="profile__icon profile__icon--pink">
+                        <i class="fas fa-heart"></i>
+                    </div>
+
+                    <div class="profile__value">
+                        3.781
+                        <div class="profile__key">Likes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
